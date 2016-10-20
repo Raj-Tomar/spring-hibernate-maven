@@ -1,11 +1,13 @@
 package com.raj.employee.serviceImpl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.raj.beans.Address;
 import com.raj.beans.EmployeeBean;
 import com.raj.employee.dao.EmployeeDao;
 import com.raj.employee.service.EmployeeService;
@@ -35,7 +37,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 		List<EmployeeBean> employeeList = null;
 		try{
 			employeeList = employeeDao.getAllEmployee();
-			System.out.println("Total Employee: "+employeeList.size());
+			for (EmployeeBean employeeBean : employeeList) {
+				logger.info(employeeBean.getFirstName());
+				Set<Address> address = employeeBean.getAddress();
+				for (Address address2 : address) {
+					logger.info(address2.getCity());
+				}
+			}
+			logger.info("Total Employee: "+employeeList.size());
 		}
 		catch(Exception e){
 			logger.error("Exception: "+e.getMessage());

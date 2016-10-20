@@ -1,10 +1,18 @@
 package com.raj.beans;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name="employee")
@@ -26,6 +34,20 @@ public class EmployeeBean{
 	
 	@Column(name="companyname")
 	private String companyName;
+	
+	@Column(name="age")
+	private String age;
+	
+	@Column(name="status")
+	private String status;
+	
+	
+	//------------------------------------
+	// Caution: need to cache collections
+	//------------------------------------
+	@OneToMany(mappedBy="employee",cascade=CascadeType.PERSIST)
+	@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
+	private Set<Address> address = new HashSet<Address>();
 
 	public EmployeeBean() {
 		super();
@@ -70,5 +92,28 @@ public class EmployeeBean{
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-	
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Set<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(Set<Address> address) {
+		this.address = address;
+	}
 }

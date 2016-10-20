@@ -37,15 +37,31 @@
 	
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource" />
-		<property name="configLocation">
+		<!-- Commented for Hibernate 2nd Level Cache -->
+		<!-- <property name="configLocation">
             <value>classpath:hibernate.cfg.xml</value>
-        </property>
+        </property> -->
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
 				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto} </prop>
+				
+				<!-- enable Hibernate 2nd level cache --> 
+        		<prop key="hibernate.cache.use_second_level_cache">true</prop>
+ 
+		        <!-- setup Hibernate 2nd level cache -->
+		        <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory </prop>
+		        <prop key="net.sf.ehcache.configurationResourceName">/ehcache.xml</prop>
+				
 			</props>
+		</property>
+		<!--  set auto scan the Entity, otherwise you will get 'Unknown entiy' error -->
+    	<!-- <property name="packagesToScan" value="com.raj.beans" /> -->
+    	<property name="packagesToScan">
+		    <list>
+		        <value>com.raj.beans</value>
+		    </list>
 		</property>
 	</bean>
 	
