@@ -15,18 +15,18 @@ import com.raj.employee.dao.EmployeeDao;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao{
-	
+
 	@Autowired
-	 private SessionFactory sessionFactory;
-	 private Session session = null;
-	 private Transaction tx = null;
-	 
-	 private static Logger logger = Logger.getLogger(EmployeeDaoImpl.class);
+	private SessionFactory sessionFactory;
 
+	private static Logger logger = Logger.getLogger(EmployeeDaoImpl.class);
 
+	@Override
 	public String saveOrUpdateEmployee(EmployeeBean employee) {
 		logger.info("saveOrUpdateEmployee daoImpl");
 		String status = "0";
+		Session session = null;
+		Transaction tx = null;
 		try {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
@@ -41,33 +41,42 @@ public class EmployeeDaoImpl implements EmployeeDao{
 			}
 		} catch (Exception e) {
 			logger.error("Exception: "+e.getMessage());
+		} finally {
+			if(session.isOpen()){
+				session.close();
+			}
 		}
 		return status;
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public List<EmployeeBean> getAllEmployee() {
 		logger.info("getAllEmployee daoImpl");
 		List<EmployeeBean> list = null;
+		Session session = null;
 		try{
 			session = sessionFactory.openSession();
-			tx = session.beginTransaction();
 			Query query = session.createQuery("From EmployeeBean");
 			list = query.getResultList();
 			logger.info("Total Employee: "+list.size());
-		}
-		catch(Exception e){
+		} catch(Exception e){
 			logger.error("Exception: "+e.getMessage());
+		} finally {
+			if(session.isOpen()){
+				session.close();
+			}
 		}
 		return list;
 	}
 
+	@Override
 	public EmployeeBean getEmployeeById(Integer id) {
 		logger.info("getEmployeeById daoImpl");
 		EmployeeBean bean = null;
+		Session session = null;
 		try {
 			session = sessionFactory.openSession();
-			tx = session.beginTransaction();
 			bean = session.get(EmployeeBean.class, id);
 		} catch (Exception e) {
 			logger.error("Exception: "+e.getMessage());
@@ -75,9 +84,12 @@ public class EmployeeDaoImpl implements EmployeeDao{
 		return bean;
 	}
 
+	@Override
 	public String deleteEmployee(Integer id) {
 		logger.info("deleteEmployee daoImpl");
 		String status = "0";
+		Session session = null;
+		Transaction tx = null;
 		try {
 			session = sessionFactory.openSession();
 			tx = session.beginTransaction();
@@ -89,6 +101,10 @@ public class EmployeeDaoImpl implements EmployeeDao{
 			}
 		} catch (Exception e) {
 			logger.error("Exception: "+e.getMessage());
+		} finally {
+			if(session.isOpen()){
+				session.close();
+			}
 		}
 		return status;
 	}

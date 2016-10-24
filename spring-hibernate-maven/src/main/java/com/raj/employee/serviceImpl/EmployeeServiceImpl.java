@@ -19,6 +19,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	private EmployeeDao employeeDao;
 	private static Logger logger = Logger.getLogger(EmployeeServiceImpl.class);
 
+	@Override
 	public String saveOrUpdateEmployee(EmployeeBean employee) {
 		logger.info("saveOrUpdateEmployee serviceImpl");
 		String status = null;
@@ -31,7 +32,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 		}
 		return null;
 	}
-
+	
+	@Override
 	public List<EmployeeBean> getAllEmployee() {
 		logger.info("getAllEmployee serviceImpl");
 		List<EmployeeBean> employeeList = null;
@@ -52,6 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return employeeList;
 	}
 
+	@Override
 	public EmployeeBean getEmployeeById(Integer id) {
 		logger.info("getAllEmployee serviceImpl");
 		EmployeeBean bean = null;
@@ -63,6 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return bean;
 	}
 
+	@Override
 	public String deleteEmployee(Integer id) {
 		logger.info("getAllEmployee serviceImpl");
 		String status = null;
